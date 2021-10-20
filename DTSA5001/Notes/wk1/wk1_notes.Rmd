@@ -1,0 +1,238 @@
+---
+title: "wk1_notes"
+author: "D. ODay"
+date: "10/11/2021"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+\setlength{\abovedisplayskip}{3pt}
+\setlength{\belowdisplayskip}{3pt}
+
+\begin{center}\textbf{\Huge Reading Notes} \end{center}
+Will need the following packages for these notes
+  * cobmbinat
+  *gtools
+```{r install_packages}
+library('combinat')
+library('gtools')
+```
+## Permuations
+We can calculate a permutation doing the following. Remember is simply the
+factorial of the number of objects.
+```{r permuation_intro}
+perms = combinat::permn(c("A", "B", "C"))
+
+head(perms)
+```
+
+## Binomial Coefficient
+A binomial coefficient is represented by ${n \choose x}$. Or in other words, "n
+choose x". The full formula is \vspace*{-\baselineskip}
+\begin{center} $$\Huge {n \choose x} = \frac{n!}{(n-x)!(x!)}$$ \end{center}
+
+\textbf{Definition:} It gives the number of ways that x objects can be chosen
+from a population of n objects
+
+\textbf{Intuition:} Will use '5 choose 3' as an example. The numerator gives
+us the total permutations. When we have picked three, there are 2 ways to order
+the remaining choices. Thus, 5! is over counting what we want (3!), by 2!.
+Therefore, we divide by 2! which is the (n-x)! part. Then we also divide by 3!
+since we don't care about the order of the groups (x! in the generic equation)
+
+```{r combo_ex}
+#Generate people labeled 1 to 5
+committees = gtools::combinations(n=5, r=3)
+
+#Should get choose(5,3) = factorial(5)/(factorial(3) * factorial(2)) = 10
+committees
+```
+
+## Sampling Table
+
+\textbf{When Order Matters with replacement:}
+$$n^{k}$$
+Basically, every single time we will have \textit{n} options and we are picking 
+\textit{k} times. Since order matters,we aren't over counting.
+
+\textbf{When Order Matters Without Replacement:}
+$$\frac{n!}{(n-k)!}$$
+Same as a regular binomial coefficient except without \textit{k!}. This is
+because \textit{k!} was used to divide out the over counting of results
+from differences of order. But we want them now since order matters.
+
+\textbf{When Order Doesn't Matter With Replacement:}
+$${n+k-1 \choose k}$$
+This box is known as the 'Bose-Einstein' result
+
+
+\textbf{When Order Doesn't Matter Without Replacement:}
+$${n \choose k}$$
+The basic binomial coefficient counts the number of ways to select k objects
+from a population of n objects where we are not replacing the objects and the
+order is not important
+\pagebreak
+
+\begin{center}\textbf{\Huge Lecture Notes} \end{center}
+
+# Intro to Probability
+## What is Statistics?
+\textbf{Statistics: } Statistics is the science of using data effectively to
+gain new knowledge.
+
+\textbf{Population: } Those individuals or objects from which we want to acquire
+information or draw a conclusion. A \textbf{subset} of it is called a sample
+
+In probability we make assumptions about the population, then we ask about the
+nature of a sample. We want to say, with some degree of confidence, whether the
+whole population has this characteristic or not. 
+
+## Sample Spaces and Events
+\textbf{Probability} studies randomness and uncertainty by giving these concepts
+a mathematical foundation. Gives us a framework to quantify uncertainty.
+
+## Terminology
+\textbf{Experiment:} any action or process that generates observations
+\textbf{Sample Space:} denoted with \textit{S}, is the set of all possible
+outcomes, of an experiment.
+\textbf{Event: } any possible outcome or combination of outcomes, of an
+experiment 
+\textbf{Cardinality: } the number of outcomes it contains. \textit{|S|}
+represents the cardinality of the sample space.
+
+## Examples
+\textbf{Experiment 1:} Flip a coin once
+\begin{itemize}
+  \item S = {0,1}
+  \item |S| = 2
+\end{itemize}
+
+\textbf{Experiment 2:} Flip a coin twice
+\begin{itemize}
+  \item S = {00, 01, 10, 11}
+  \item |S| = 4
+\end{itemize}
+
+
+\textbf{Experiment 3:} Flip a coin until we get a tail
+\begin{itemize}
+  \item S = {1, 01, 001, 0001,...}
+  \item |S| = infinity
+\end{itemize}
+
+# Axioms of Probability
+
+## What is Probability?
+The goal is to assign some number, P(A), called the probability of the event A,
+which will give a precise measure to the chance that A will occur. In
+statistics, we draw a sample from a population, and give an estimate. You'll be
+able to understand statistics more thoroughly and deeply if you first understand
+probabilities
+
+\begin{itemize}
+  \item Start with an experiment that generates outcomes
+  \item Organize all of the outcomes into a sample space, S
+  \item Let A be some even contained in S. That is, A is some collection of
+  outcomes from the experiment
+\end{itemize}
+
+## Axioms of Probability
+\textbf{Axiom 1: }For any event A, $$0 \leq P(A) \leq 1$$
+\textbf{Axiom 2: } $$P(S) = 1$$
+\textbf{Axiom 3: } If A~1~, A~2~, ..., A~n~ are a collection of n mutually
+exclusive events (i.e. the intersection of any two is the empty set), then
+$$P(\cup_{k=1}^{n}A_k) = \sum_{k=1}^{n}P(A_k)$$
+
+## Consequences of Axioms  
+
+\textbullet A $\cap$ A^c^ = $\emptyset$ and A $\cup$ A^c^ = S so, 1 = P(S)=
+P(A $\cup$ A^c^)= P(A) + P(A^c^) which implies P(A^c^) = 1 - P(A)
+
+\textbullet if A $\cap$ B = $\emptyset$, then P(A $\cap$ B) = 0 = P($\emptyset$)
+
+\textbullet P(A $\cup$ B) = P(A) + P(B) - P(A $\cap$ B)  
+These are useful as they help us calculate many probabilities
+
+## Example 2 notes
+If we have P(A), P(B), P(C), P(A$\cap$B), P(A$\cap$C), P(B$\cap$C),
+P(A $\cap$ B $\cap$ C). Then the probability of at least one of these events
+occuring is:
+$$P(A \cup B \cup C) = P(A) +P(B) + P(C) - P(A \cap B) - P(A \cap C) -
+P(B \cap C) + P(A \cap B \cap C)$$
+
+We do this because we must at subtract the intersection because
+$P(A \cap B \cap C)$ was counted in three times with P(A), P(B), P(C) and then
+counted out three times with $P(A \cap B)$, $P(A \cap c)$, $P(B \cap C)$. Thus, we need to add it back in.
+
+# Counting: Permutations and Combinations
+
+## Counting
+
+If a sample space S has N single events, and if each of these events is equally likely to occur, then we need only count the number of events to find the probability (let A be an event in S, P(E~k~) = 1/N, S = {E~1~, E~2~,...,E~n~} and k=1,2,....,N), then
+$$P(A) = \frac{number \space of \space simple \space events \space in \space A}{N}$$  
+### Example
+Experiment: Roll a six-sided die twice  
+|S| = 36  
+S = {(i,j)|i,j $\in$ {1,2,3,4,5,6}}  
+Each of the outcomes is equally likely
+\textbullet Let A be the even of rolling a 1 on the first roll  
+P(A) = P({11, 12, 13, 14, 15, 16}) = $\frac{1}{6}$  
+
+## Permutations
+Any ordered sequence of k objects taken from a set of n distinct objects is called a permutation of size k. Notation: P~k,n~
+
+### Example
+Organization has 60 people, 1 person selected as president, another as vice president and another as treasurer. What is the cardinality of the sample space (i.e. how many ways can this be done?)?  
+\textbf{Answer: } P~3,60~ = 60 $\cdot$ 59 $\cdot$ 58 = $\frac{60!}{57!}$
+
+## Combinations
+Given same number of people, we just want to choose 3 people. Order doesn't matter (no roles). Notation C~k,n~.  
+\textbf{Answer: } $|S_{c}| = {60! \over {57!3!}}= {60 \choose 3}$
+
+### Example Continued
+Suppose we have the same 60 people, 35 are female and 25 are male. We need to select a committee of 11 people.  
+\textbullet How many ways can such a committee be formed?  
+    The number of committees of 11 = ${60 \choose 11}$  
+\textbullet What is the probability that a randomly selected committee will contain at least 5 men and at least 5 women? (Assume each committee is equally likely)  
+$$
+\begin{aligned}
+P(\text{at least 5 men and at least 5 women on the committee}) = \\  
+     P(\text{5 men and 6 women}) + P(\text{6 men and 5 women}) = \\ {{{25 \choose 5}{35 \choose 6}}\over{60 \choose 11}} + {{{25 \choose 6}{35 \choose 5}}\over{60 \choose 11}}
+\end{aligned}
+$$
+\underline{We had to add the probabilities together because there were two different possible combinations for the answer}
+
+## Another Example
+A city has bought 20 buses. Shortly after being put into service, some of them develop cracks in the frame. the buses are inspected and 8 have visible crack.  
+\textbullet How many ways can the city select a sample of 5 for thorough inspection? (Assume each bus is equally likely to be chosen) 
+$${20 \choose 5}= |S|$$
+\textbullet If 5 buses are chosen at random, find the probability that exactly 4 have cracks.  
+$$P(\text{4 with cracks}) = {{{8 \choose 4}{12 \choose 1}} \over {20 \choose 5}}$$
+\textbullet If 5 buses are chosen at random, find the probability that at least 4 have cracks
+$$P(\text{at least 4 have cracks}) = {{{8 \choose 4}{12 \choose 1}}\over{20 \choose 5}} + {{8 \choose 5}\over{20 \choose 5}}$$
+\pagebreak
+
+\begin{center}\textbf{\Huge Homework Notes} \end{center}
+
+### Learning probability simulation within R
+
+#Simulating a Die 
+Simulating a regular die with 5 trials ran.
+```{r simple_die}
+  die = 1:6
+  sample(die, size = 5, replace = TRUE)
+```
+
+Simulating an unfair die
+```{r unfair_die}
+  die = 1:6
+  result = sample(die, size = 500, replace = TRUE, prob=c(.1, .1, .5, .1,.1,.1))
+  table(result)
+  table(result) / 500
+```
+
+ 
+
+
