@@ -129,6 +129,10 @@ $$P(X = x) = (1-p)^{x}(p)$$
 
 The Intuition behind this is pretty self explanatory. A failure has to be rolled \textit{x} times until we get to the success with a probability of \textit{p}. 
 
+```{r geometric}
+dgeom()
+```
+
 # First Success
 
 ### Story
@@ -163,8 +167,15 @@ Same as Geometric but mulitiplie by r.
 $$\frac{r(1-p)}{p^{2}}$$
 
 ### PMF
-$$P(X = x) = {x+r-1 \choose r-1}p^{r}(1-p)^{x-r}$$
-Regarding $p$ and $1-p$ we are just multiplying by the number of of success well find for $p$ and the number of trial ran until we get to the number of success for $1-p$. For the ${x+r-1 \choose r-1}$, we know the last event will have to be a success since the experiment ends needs to end with a success. Also, we need to find a way to order all the $r-1$ other successes within the trial with the x failures  
+$$P(X = x) = {x+r-1 \choose r-1}p^{r}(1-p)^{x}$$
+Regarding $p$ and $1-p$ we are just multiplying by the number of of success well find for $p$ and the number of trial ran until we get to the number of success for $1-p$. For the ${x+r-1 \choose r-1}$, we know the last event will have to be a success since the experiment ends needs to end with a success. Also, we need to find a way to order all the $r-1$ other successes within the trial with the x failures.  
+
+```{r nb_code}
+dnbinom(3, 9, 0.5)
+#dnbinom(x, r, prob)
+# x is the number of failures, r is the number of sucesses wanted
+# prob is the probability of success
+```
   
 # Poisson Distribution
   
