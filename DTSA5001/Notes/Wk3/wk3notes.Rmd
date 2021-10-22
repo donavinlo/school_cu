@@ -163,7 +163,7 @@ Same as Geometric but mulitiplie by r.
 $$\frac{r(1-p)}{p^{2}}$$
 
 ### PMF
-$$P(X = x) = {x+r-1 \choose r-1}p^{r}(1-p)^{x}$$
+$$P(X = x) = {x+r-1 \choose r-1}p^{r}(1-p)^{x-r}$$
 Regarding $p$ and $1-p$ we are just multiplying by the number of of success well find for $p$ and the number of trial ran until we get to the number of success for $1-p$. For the ${x+r-1 \choose r-1}$, we know the last event will have to be a success since the experiment ends needs to end with a success. Also, we need to find a way to order all the $r-1$ other successes within the trial with the x failures  
   
 # Poisson Distribution
