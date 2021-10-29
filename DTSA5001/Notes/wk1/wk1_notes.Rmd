@@ -1,5 +1,5 @@
 ---
-title: "wk1_notes"
+title: "wk1_notes: Foundation for Data Science"
 author: "D. ODay"
 date: "10/11/2021"
 output: pdf_document
@@ -234,5 +234,3 @@ Simulating an unfair die
 ```
 
  
-
-

@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.23 (TeX Live 2022/dev) (preloaded format=pdflatex 2021.10.21)  22 OCT 2021 17:27
+This is pdfTeX, Version 3.141592653-2.6-1.40.23 (TeX Live 2022/dev) (preloaded format=pdflatex 2021.10.21)  28 OCT 2021 22:29
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -488,18 +488,19 @@ Package hyperref Warning: Difference (2) between bookmark levels is greater
 Package hyperref Warning: Difference (2) between bookmark levels is greater 
 (hyperref)                than one, level fixed on input line 307.
 
+LaTeX Font Info:    Trying to load font information for TS1+lmtt on input line 
+347.
+(/Users/donavin/Library/TinyTeX/texmf-dist/tex/latex/lm/ts1lmtt.fd
+File: ts1lmtt.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
+)
 
 Package hyperref Warning: Difference (2) between bookmark levels is greater 
-(hyperref)                than one, level fixed on input line 348.
+(hyperref)                than one, level fixed on input line 361.
 
 [4]
 
 Package hyperref Warning: Difference (2) between bookmark levels is greater 
-(hyperref)                than one, level fixed on input line 376.
-
-
-Package hyperref Warning: Difference (2) between bookmark levels is greater 
-(hyperref)                than one, level fixed on input line 412.
+(hyperref)                than one, level fixed on input line 389.
 
 [5]
 
@@ -511,41 +512,59 @@ Package hyperref Warning: Difference (2) between bookmark levels is greater
 Package hyperref Warning: Difference (2) between bookmark levels is greater 
 (hyperref)                than one, level fixed on input line 501.
 
-[8] (./wk3notes.aux)
+[8]
+
+Package hyperref Warning: Difference (2) between bookmark levels is greater 
+(hyperref)                than one, level fixed on input line 528.
+
+
+Package hyperref Warning: Difference (2) between bookmark levels is greater 
+(hyperref)                than one, level fixed on input line 551.
+
+
+Package hyperref Warning: Difference (2) between bookmark levels is greater 
+(hyperref)                than one, level fixed on input line 564.
+
+
+Package hyperref Warning: Difference (2) between bookmark levels is greater 
+(hyperref)                than one, level fixed on input line 582.
+
+[9] [10] (./wk3notes.aux)
 Package rerunfilecheck Info: File `wk3notes.out' has not changed.
-(rerunfilecheck)             Checksum: 931E4E0D0A5A718F5B3F1AC449AFE3DA;5628.
+(rerunfilecheck)             Checksum: F410400E5B045A3FEFF5E5245992A84E;6560.
  ) 
 Here is how much of TeX's memory you used:
- 10691 strings out of 480539
- 155655 string characters out of 5901807
- 464667 words of memory out of 5000000
- 28060 multiletter control sequences out of 15000+600000
- 456614 words of font info for 69 fonts, out of 8000000 for 9000
+ 10774 strings out of 480539
+ 156830 string characters out of 5901807
+ 465216 words of memory out of 5000000
+ 28115 multiletter control sequences out of 15000+600000
+ 456921 words of font info for 70 fonts, out of 8000000 for 9000
  14 hyphenation exceptions out of 8191
- 60i,6n,66p,322b,350s stack positions out of 5000i,500n,10000p,200000b,80000s
-{/Users/donavin/Library/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-ec.enc}{/Use
-rs/donavin/Library/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-mathsy.enc}{/Users/
-donavin/Library/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-rm.enc}{/Users/donavin
-/Library/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-mathit.enc}{/Users/donavin/Li
-brary/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-mathex.enc}</Users/donavin/Libra
-ry/TinyTeX/texmf-dist/fonts/type1/public/lm/lmbx10.pfb></Users/donavin/Library/
-TinyTeX/texmf-dist/fonts/type1/public/lm/lmbx12.pfb></Users/donavin/Library/Tin
-yTeX/texmf-dist/fonts/type1/public/lm/lmex10.pfb></Users/donavin/Library/TinyTe
-X/texmf-dist/fonts/type1/public/lm/lmmi10.pfb></Users/donavin/Library/TinyTeX/t
-exmf-dist/fonts/type1/public/lm/lmmi7.pfb></Users/donavin/Library/TinyTeX/texmf
--dist/fonts/type1/public/lm/lmr10.pfb></Users/donavin/Library/TinyTeX/texmf-dis
-t/fonts/type1/public/lm/lmr12.pfb></Users/donavin/Library/TinyTeX/texmf-dist/fo
-nts/type1/public/lm/lmr17.pfb></Users/donavin/Library/TinyTeX/texmf-dist/fonts/
-type1/public/lm/lmr7.pfb></Users/donavin/Library/TinyTeX/texmf-dist/fonts/type1
-/public/lm/lmri10.pfb></Users/donavin/Library/TinyTeX/texmf-dist/fonts/type1/pu
-blic/lm/lmsy10.pfb></Users/donavin/Library/TinyTeX/texmf-dist/fonts/type1/publi
-c/lm/lmsy7.pfb></Users/donavin/Library/TinyTeX/texmf-dist/fonts/type1/public/lm
-/lmtt10.pfb></Users/donavin/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lm
-tti10.pfb>
-Output written on wk3notes.pdf (8 pages, 258231 bytes).
+ 60i,6n,66p,322b,362s stack positions out of 5000i,500n,10000p,200000b,80000s
+{/Users/donavin/Library/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-ts1.enc}{/Us
+ers/donavin/Library/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-ec.enc}{/Users/don
+avin/Library/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-mathsy.enc}{/Users/donavi
+n/Library/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-rm.enc}{/Users/donavin/Libra
+ry/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-mathit.enc}{/Users/donavin/Library/
+TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-mathex.enc}</Users/donavin/Library/Tin
+yTeX/texmf-dist/fonts/type1/public/lm/lmbx10.pfb></Users/donavin/Library/TinyTe
+X/texmf-dist/fonts/type1/public/lm/lmbx12.pfb></Users/donavin/Library/TinyTeX/t
+exmf-dist/fonts/type1/public/lm/lmex10.pfb></Users/donavin/Library/TinyTeX/texm
+f-dist/fonts/type1/public/lm/lmmi10.pfb></Users/donavin/Library/TinyTeX/texmf-d
+ist/fonts/type1/public/lm/lmmi7.pfb></Users/donavin/Library/TinyTeX/texmf-dist/
+fonts/type1/public/lm/lmr10.pfb></Users/donavin/Library/TinyTeX/texmf-dist/font
+s/type1/public/lm/lmr12.pfb></Users/donavin/Library/TinyTeX/texmf-dist/fonts/ty
+pe1/public/lm/lmr17.pfb></Users/donavin/Library/TinyTeX/texmf-dist/fonts/type1/
+public/lm/lmr7.pfb></Users/donavin/Library/TinyTeX/texmf-dist/fonts/type1/publi
+c/lm/lmri10.pfb></Users/donavin/Library/TinyTeX/texmf-dist/fonts/type1/public/l
+m/lmsy10.pfb></Users/donavin/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/l
+msy7.pfb></Users/donavin/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmtt1
+0.pfb></Users/donavin/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmtti10.
+pfb>
+Output written on wk3notes.pdf (10 pages, 265770 bytes).
 PDF statistics:
- 386 PDF objects out of 1000 (max. 8388607)
- 343 compressed objects within 4 object streams
- 105 named destinations out of 1000 (max. 500000)
- 385 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 456 PDF objects out of 1000 (max. 8388607)
+ 409 compressed objects within 5 object streams
+ 129 named destinations out of 1000 (max. 500000)
+ 465 words of extra memory for PDF output out of 10000 (max. 10000000)
 

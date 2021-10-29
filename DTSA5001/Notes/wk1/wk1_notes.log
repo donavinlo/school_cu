@@ -1,11 +1,11 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.23 (TeX Live 2022/dev) (preloaded format=pdflatex 2021.10.15)  18 OCT 2021 22:25
+This is pdfTeX, Version 3.141592653-2.6-1.40.23 (TeX Live 2022/dev) (preloaded format=pdflatex 2021.10.21)  28 OCT 2021 22:54
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
 **wk1_notes.tex
 (./wk1_notes.tex
 LaTeX2e <2021-06-01> patch level 1
-L3 programming layer <2021-10-12> (/Users/donavin/Library/TinyTeX/texmf-dist/te
+L3 programming layer <2021-10-18> (/Users/donavin/Library/TinyTeX/texmf-dist/te
 x/latex/base/article.cls
 Document Class: article 2021/02/12 v1.4n Standard LaTeX document class
 (/Users/donavin/Library/TinyTeX/texmf-dist/tex/latex/base/size10.clo
@@ -296,7 +296,7 @@ Package: ifvtex 2019/10/25 v1.7 ifvtex legacy package. Use iftex instead.
 \Gm@layoutvoffset=\dimen159
 \Gm@dimlist=\toks24
 ) (/Users/donavin/Library/TinyTeX/texmf-dist/tex/latex/fancyvrb/fancyvrb.sty
-Package: fancyvrb 2021/08/12 v3.8 verbatim text (tvz,hv)
+Package: fancyvrb 2021/10/15 v3.9 verbatim text (tvz,hv)
 \FV@CodeLineNo=\count281
 \FV@InFile=\read2
 \FV@TabBox=\box52
@@ -327,7 +327,7 @@ Package graphics Info: Driver file: pdftex.def on input line 107.
 )
 (/Users/donavin/Library/TinyTeX/texmf-dist/tex/latex/l3backend/l3backend-pdftex
 .def
-File: l3backend-pdftex.def 2021-10-12 L3 backend support: PDF output (pdfTeX)
+File: l3backend-pdftex.def 2021-10-18 L3 backend support: PDF output (pdfTeX)
 \l__color_backend_stack_int=\count284
 \l__pdf_internal_box=\box53
 ) (./wk1_notes.aux)
@@ -510,10 +510,10 @@ Package rerunfilecheck Info: File `wk1_notes.out' has not changed.
 (rerunfilecheck)             Checksum: AA00764DF12F6A15E8238DB2E063FB14;3069.
  ) 
 Here is how much of TeX's memory you used:
- 10656 strings out of 480559
- 155934 string characters out of 5902450
- 464088 words of memory out of 5000000
- 28049 multiletter control sequences out of 15000+600000
+ 10659 strings out of 480539
+ 156039 string characters out of 5901807
+ 465946 words of memory out of 5000000
+ 28072 multiletter control sequences out of 15000+600000
  466272 words of font info for 74 fonts, out of 8000000 for 9000
  14 hyphenation exceptions out of 8191
  60i,9n,66p,427b,380s stack positions out of 5000i,500n,10000p,200000b,80000s
@@ -536,7 +536,7 @@ c/lm/lmri10.pfb></Users/donavin/Library/TinyTeX/texmf-dist/fonts/type1/public/l
 m/lmsy10.pfb></Users/donavin/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/l
 mtt10.pfb></Users/donavin/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmtt
 i10.pfb>
-Output written on wk1_notes.pdf (8 pages, 265013 bytes).
+Output written on wk1_notes.pdf (8 pages, 267109 bytes).
 PDF statistics:
  245 PDF objects out of 1000 (max. 8388607)
  202 compressed objects within 3 object streams

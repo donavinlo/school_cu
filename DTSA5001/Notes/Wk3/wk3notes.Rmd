@@ -1,5 +1,5 @@
 ---
-title: "Week 3 Notes"
+title: "Week 3 Notes: Discrete Random Variables"
 author: "D. ODay"
 date: "10/21/2021"
 output: pdf_document
@@ -130,7 +130,10 @@ $$P(X = x) = (1-p)^{x}(p)$$
 The Intuition behind this is pretty self explanatory. A failure has to be rolled \textit{x} times until we get to the success with a probability of \textit{p}. 
 
 ```{r geometric}
-dgeom()
+# For first success, use the geomertic function but make x one less since the geometric distribution 
+# doesn't include the sucessful trial
+#X ~ Geom(.05). Want to find 4 failures before finding success
+dgeom(4, 0.05)
 ```
 
 # First Success
@@ -177,21 +180,6 @@ dnbinom(3, 9, 0.5)
 # prob is the probability of success
 ```
   
-# Poisson Distribution
-  
-### Story
-If we have many , with very small probabilities, chances at success then we can use the Poisson Distribution to model the number of occurrences of the event. An example would be lottery tickets.  
-
-### Distribution Label
-$$X \sim Pois(\lambda)$$
-$\lambda$ is the number of occurrences of the rare events/successes. Also labeled as the rate of occurrence. Example is if we say we expect 5 lottery winners out of all the tickets out there. $\lambda$ = 5.  
-
-### Expectation and Variance
-$$\lambda$$
-
-### PMF
-$$P(X = x) = \frac{e^{-\lambda}\lambda^{x}}{x!}$$
-A binomial distribution converges to a poisson distribution when $n\rightarrow \infty$ and $p\rightarrow 0$. 
   
 # HyperGeometric
 
@@ -229,7 +217,7 @@ A property of random variables. Example, say that we're waiting for food at a re
 
 \pagebreak
 
-\begin{center}\textbf{\Huge Reading Notes} \end{center}
+\begin{center}\textbf{\Huge Lecture Notes} \end{center}
 
 ### Example of PMf
 We roll a six sided, let X be the sum of the two rolls
@@ -246,4 +234,55 @@ When working with data, this helps us calculate data after it has been transform
 
 ### Variance
 $$\sigma^{2} = V(X) = E[(X - E(X))^{2}] = E(X^{2}) - (E(X))^{2}$$
+\pagebreak
 
+\begin{center}\textbf{\Huge Formulas} \end{center}
+
+# Binomial Distribution
+
+### Expected Value
+
+$$E(X) = np$$
+
+### Variance
+
+$$Var(X) = npq$$
+
+### PMF
+
+$$P(X = x) = {n \choose x}p^{x}q^{n-x}$$
+
+# Bernoulli Distribution
+
+#### Expectation
+$$E(X) = p$$
+
+### Variance
+$$Var(X) = p(1-p)$$
+
+### PMF
+$$P(X=x) = p^{x}(1-p)^{1-x}$$
+
+# Geometric
+
+### Expectation
+$$E(X) = \frac{1-p}{p} = \frac{1}{p}$$
+
+### Variance
+$$\frac{1-p}{p^{2}}$$
+
+### PMF
+$$P(X=x) = (1-p)^{x}(p)$$
+
+# Negative Binomial
+
+### Expectation
+
+$$E(X) = \frac{r(1-p)}{p}$$
+
+### Variance
+$$\frac{r(1-p)}{p^{2}}$$
+
+### PMF
+
+$$P(X = x) = {x+r-1 \choose r-1}p^{r}(1-p)^{x}$$

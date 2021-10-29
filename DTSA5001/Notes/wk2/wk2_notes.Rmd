@@ -1,5 +1,5 @@
 ---
-title: "Week 2 Notes"
+title: "Week 2 Notes: Conditional Property"
 output:
   pdf_document: default
   html_notebook: default
@@ -102,3 +102,31 @@ $$P(A_{i_{1}} \cap A_{i_{2}} \cap ... \cap A_{i_{n}}) = P(A_{i_{1}})P(A_{i_{2}})
 ### Side note
 
 \textbf{two mutually exclusive events are not independent. If one event occurs, then the other one cannot occur. }
+
+\pagebreak
+\begin{center}\textbf{\Huge Reading Notes} \end{center}
+
+# Conditional Probability
+
+$$P(A|B) = \frac{P(A \cap B)}{P(B)}$$
+
+### Law of Total Probability
+
+$$P(A) = P(A|B)P(B) + P(A|B^{c})P(B^{c})$$
+$$P(B) = \sum_{k=1}^{n}P(B|A_{k})P(A_{k})$$
+
+# Baye's Rule
+
+$$P(A|B) = \frac{P(B|A)P(A)}{P(B)} = \frac{P(B|A)P(A)}{P(A|B)P(B) + P(A|B^{c})P(B^{c})}$$
+
+# Inclusion and Exclusion
+$$P(A \cup B) = P(A) + P(B) - P(A \cap B)$$
+
+# Independence
+
+$$P(A|B) = P(A), P(B|A) = P(B)$$
+$$P(A \cap B) = P(A) \cdot P(B)$$
+
+# Conditional Independence
+$$P(A \cap B| C) = P(A|C)P(B|C)$$
+
