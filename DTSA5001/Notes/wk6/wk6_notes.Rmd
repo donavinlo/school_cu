@@ -86,8 +86,21 @@ P(\frac{T_{0}-40}{\sqrt{30}} \leq \frac{t-40}{\sqrt{30}}) = .99 \\
 ### Sample Mean
 $$\bar{X_{n}} = \frac{X_{1} +...+ X_{n}}{n}$$
 $$\bar{X_{n} \rightarrow^{D} N(\mu, \frac{\sigma^{2}}{n})}$$
+### Sums of Variance of Normal Sample
+$$Var(X+Y) = \sqrt{\frac{\sigma_{1}^{2}}{n_1} + \frac{\sigma_{2}^{2}}{n_2}}$$
+
 \textbf{Law of Total Expectation}
 $$E(X) = E(X|A)P(A) + E(X|A^{c})P(A^{c})$$
+
+as X and Y are independent
+
+so W = X+Y is also a normal distribution with mean = 0 and variance = 2 sigma²
+
+U= 2X also normal because linear combination of independent variable or scaler multiplication is also a normal distribution
+
+So U is also normal with mean= 0 and variance 4sigma²
+
+But W and U do not have same distribution because variance is different.
 
 
 

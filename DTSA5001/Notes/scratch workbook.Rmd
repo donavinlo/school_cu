@@ -1,0 +1,36 @@
+---
+title: "Scratch"
+author: "D. ODay"
+date: "10/29/2021"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## R Markdown
+
+\begin{center}
+\begin{tabular} {| c | c c c c c c | c |}
+\hline
+X & & & Y & & & & P(X=x) \\
+\hline
+& 1 & 2 & 3 & 4 & 5 & 6 & \\
+\hline
+1 & $\frac{1}{36}$ & $\frac{2}{36}$ & $\frac{2}{36}$ & $\frac{2}{36}$ & $\frac{2}{36}$ & $\frac{2}{36}$ & $\frac{11}{36}$ \\
+\hline
+2 & 0 & $\frac{1}{36}$ & $\frac{2}{36}$ & $\frac{2}{36}$ & $\frac{2}{36}$ & $\frac{2}{36}$ & $\frac{9}{36}$ \\
+\hline
+3 & 0 & 0 & $\frac{1}{36}$ & $\frac{2}{36}$ & $\frac{2}{36}$ & $\frac{2}{36}$ & $\frac{7}{36}$ \\
+\hline
+4 & 0 & 0 & 0 & $\frac{1}{36}$ & $\frac{2}{36}$ & $\frac{2}{36}$ & $\frac{5}{36}$ \\
+\hline
+5 & 0 & 0 & 0 & 0 & $\frac{1}{36}$ & $\frac{2}{36}$ & $\frac{3}{36}$ \\
+\hline
+6 & 0 & 0 & 0 & 0 & 0 & $\frac{1}{36}$ & $\frac{1}{36}$ \\
+\hline
+P(Y=y) & $\frac{1}{36}$ & $\frac{3}{36}$ & $\frac{5}{36}$ & $\frac{7}{36}$ & $\frac{9}{36}$ & $\frac{11}{36}$ & 1 \\
+\hline
+\end{tabular}
+\end{center}

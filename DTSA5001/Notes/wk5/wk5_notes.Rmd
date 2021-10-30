@@ -234,12 +234,15 @@ $$Cov(X,Y) = E((X - E(X))(Y-E(Y))) = E(XY) - E(X)(E(Y)$$
 $$Cov(X,X) = E(X-E(X))^{2} = Var(X)$$
 $$Cov(X,Y) = Cov(Y,X)$$
 $$Cov(X,Y) = E(XY) - E(X)E(Y)$$
-If Independent:
+If Independent the following equation (only the one following):
 
 $$E(XY) = E(X)E(Y)$$
 $$Cov(X,c) = 0$$
 $$Cov(X, Y+Z) = Cov(X,Y) + Cov(X,Z)$$
 $$Cov( \sum_{i=1}X_{i} \sum_{j=1}Y_{i}) = \sum_{i,j}Cov(X_{i}Y_{j})$$
+$$Cov(aX,bY) = abCov(X,Y)$$
+
+$$Cov(X+a, Y+b) = Cov(X,Y)$$
 
 $$Var(X+Y) = Cov(X+Y, X+Y) = Var(X) + Var(Y) + 2Cov(X,Y)$$
 
@@ -276,3 +279,7 @@ $$P(X=x, Y=y) = P(X=x)P(Y=y)$$
 
 probability density function} is:
 $$P( a \leq X \leq b, c \leq Y \leq d) = \int_{a}^{b}\int_{c}^{d}f(x,y)dxdy$$
+
+## Getting Marginal PDf from Joint PDF
+Simply integrate or sum out the unwanted variable of its supprt which will leave a function with only the desired variable. The following example with $f(x,y) = xy$ where X and Y both run from 0 to 1
+$$ f(x) = \int_{0}^{1} xy \; dy = \frac{xy^2}{2} \Big|_{0}^{1} = \frac{x}{2}$$
