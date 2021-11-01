@@ -23,7 +23,7 @@ $$P(B) = \sum_{k=1}^{n}P(B|A_{k})P(A_{k})$$
 We need to keep in mind that all A_{i}'s are mutually exclusive.
 # Bayes' Rule
 Bayes' Rule provides a useful way of going between P(A|B) and P(B|A). The formula is
-$$P(A|B) = \frac{P(B|A)P(A)}{P(B)} = \frac{P(B|A)P(A)}{P(A|B)P(B) + P(A|B^{c})P(B^{c})}$$
+$$P(A|B) = \frac{P(B|A)P(A)}{P(B)} = \frac{P(B|A)P(A)}{P(B|A)P(A) + P(B|A^{c})P(A^{c})}$$
 The very right hand side is often referred to as the \textit{Law of Total Probability} (LOTP)
 
 ### Bayes Rule Example

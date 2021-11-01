@@ -69,7 +69,7 @@ dbinom(3,10, 0.5)
 
 ```{r pbinom}
 #Find P(X<=6) where X ~ Bin(15, 1/3)
-dbinom(6,15, 1/3)
+pbinom(6,15, 1/3)
 ```
 
 ```{r qbinom}

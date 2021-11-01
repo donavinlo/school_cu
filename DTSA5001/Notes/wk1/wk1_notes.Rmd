@@ -202,6 +202,12 @@ P(\text{at least 5 men and at least 5 women on the committee}) = \\
      P(\text{5 men and 6 women}) + P(\text{6 men and 5 women}) = \\ {{{25 \choose 5}{35 \choose 6}}\over{60 \choose 11}} + {{{25 \choose 6}{35 \choose 5}}\over{60 \choose 11}}
 \end{aligned}
 $$
+
+Can also do it in the calculation in r code:
+```{r choose_example}
+(choose(25,5) * choose(35,6))/choose(60,11) +
+(choose(25,6) * choose(35,5))/choose(60,11) 
+```
 \underline{We had to add the probabilities together because there were two different possible combinations for the answer}
 
 ## Another Example
