@@ -13,7 +13,7 @@ knitr::opts_chunk$set(echo = TRUE)
 # Poisson Distribution
   
 ### Story
-If we have many , with very small probabilities, chances at success then we can use the Poisson Distribution to model the number of occurrences of the event. An example would be lottery tickets.  
+If we have many , with very small probabilities, chances at success then we can use the Poisson Distribution to model the number of occurrences of the event. An example would be lottery tickets.  \textbf{A discrete random variable that describes the total number of events that happen in a certain time period.}
 
 ### Distribution Label
 $$X \sim Pois(\lambda)$$
@@ -62,10 +62,13 @@ Overall, using these tools can be useful when needing to find the variance
 # Uniform Distribution
 
 ### Story
-Generates a completely random number in some segment. By random, we mean if we divide the spectrum into segments, we randomly choose one of the segments. for example, if we divide the segment into 4 equal pieces, they each have a .25 probability that the random variable will crystalize in it. Probability is proportional to length.
-
+Generates a completely random number in some segment. By random, we mean if we divide the spectrum into segments, we randomly choose one of the segments. for example, if we divide the segment into 4 equal pieces, they each have a .25 probability that the random variable will crystallize in it. Probability is proportional to length.  
+  
 ### Dsitribution Label
+
 $$ X \sim U[a,b] $$
+
+
 ### PDF
 We know the PDF must me constant. This is because the probability is proportional to length; the PDF cannot change with x. One area of the distribtuion that is the same length of another, cannot have a higher probability. 
 $$c = \frac{1}{b-a}$$
@@ -153,7 +156,7 @@ $$f(x) = \frac{1}{\sigma\sqrt{2\pi}}e^{-\frac{1}{2}\left(\frac{x-\mu}{\sigma}\ri
 # Exponential Distribution
 
 ### Story
-Basically, the distribution gives the time waited for the first success in a continuous interval of time, where $\lambda$ is the rate parameter for the success. Basically, the continuous version of the Geometric function.
+Basically, the distribution gives the time waited for the first success in a continuous interval of time, where $\lambda$ is the rate parameter for the success. Basically, the continuous version of the Geometric function. \textbf{Time until the first occurence of something happens}. If we have an arrival rate of 2 per hours ($\lambda = 2$), then we would expect to 2 srrive every 1/2 hour. therefore, our mean of the exponential is $\frac{1}{$lambda}$. Lambda is a rate parameter. 1/lambda would be a rate parameter. When using the function, it will be specified in the function.
 ### Distribution Label
 $$X \sim Expo(\lambda)$$
 

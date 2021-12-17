@@ -191,6 +191,22 @@ $$\begin{aligned}
   -e^{-\lambda_{1} x_{1}}|_{0}^{4000} \cdot -e^{-\lambda_{2} x_{2}}|_{0}^{4000}   \Rightarrow \\ (1 - e^{\frac{-4000}{2000}})(1 - e^{\frac{-4000}{3000}})         \Rightarrow (1-e^{-2})(1-e^{\frac{-4}{3}}) \approx 0.6368
 \end{aligned}$$
 
+```{r exponential}
+pexp(q=4000, rate = 1/2000) * pexp(q=4000, rate = 1/3000)
+# for exponential function, the rate is 1 over the 'rate amount'. 
+```
+
+
+Another Example:
+Suppose that the service time at a call center is exponentially distributed with the average call lasting $10$ minutes. If 3 workers are each on a call, what is the probability that they have each completed their service in 12 minutes? Assume that the length of each call is independent of every other call. Round answer to four decimal places.
+```{r exp_2}
+one_caller = pexp(q=12, rate = 1/10)
+one_caller^3
+
+#think of it as 1 per 10 minutes for the rate (1/lambda)
+
+```
+
 # Covariance and Correlation
   
 \textit{We will be using the same example we using for Joint probability (The insurance agency}
