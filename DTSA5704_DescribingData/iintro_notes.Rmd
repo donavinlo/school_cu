@@ -1,0 +1,25 @@
+---
+title: "Week 1: Introduction"
+output: html_notebook
+---
+
+Add a new chunk by clicking the *Insert Chunk* button on the toolbar or by pressing *Cmd+Option+I*.
+
+When you save the notebook, an HTML file containing the code and output will be saved alongside it (click the *Preview* button or press *Cmd+Shift+K* to preview the HTML file). 
+
+The preview shows you a rendered HTML copy of the contents of the editor. Consequently, unlike *Knit*, *Preview* does not run any R code chunks. Instead, the output of the chunk when it was last run in the editor is displayed.
+
+# Types of Data and Measurement Scales
+- Measurement and data are not the same thing
+  - Measurement is the process
+  - Data is the output
+  - Items/Units we measure
+- Types of data
+  - Quantitative data are data measures along a numerical       scale (continuous)
+  - Qualitative Data Descriptions that fall into categories
+    - Often referred to as discrete
+    - Frequencies, proportions or rates (discrete)
+    - Items/units we count
+- Measurement & Measurement Scales
+  - The numbers, or symbols, are assigned such that the         relationships amongst the numbers or symbols reflect     relationships in the attribute studied
+  - measurements 
