@@ -1,0 +1,559 @@
+---
+title: "NYPD Data"
+output: pdf_document
+---
+
+```{r tinytex_install}
+#Can comment out if already installed
+tinytex::tlmgr_install("pdfcrop")
+```
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+
+## Packages Needed
+- Tidyverse
+- Lubridate
+- DT
+```{r import_packages, message= FALSE}
+library(tidyverse)
+library(lubridate)
+library(DT)
+```
+
+
+## Importing the data
+
+First, I'll import the data from <https://catalog.data.gov/dataset/nypd-shooting-incident-data-year-to-date> . This data represents information about every shooting incident in New York City since 2006.
+
+```{r data_import}
+url_nypd <- paste0("https://data.cityofnewyork.us/api/views/833y-fsy8/",
+              "rows.csv?accessType=DOWNLOAD")
+
+nypd_shootings <- read_csv(url_nypd)
+
+```
+
+## Tidying Data
+
+Looking at the column details, I can see some columns are not the correct 
+variable types. Therefore, I will make the following changes
+
+- *Occur_Date* is listed as a string/character type
+  - This needs to change to a date column using the **lubridate** package
+- The following variables will need to be changed to a factor type because they
+are categorical
+  - *BORO*
+  - *JURISDICTION_CODE*
+  - *PERP_AGE_GROUP*
+  - *PERP_SEX*
+  - *PERP_RACE*
+  - *VIC_AGE_GROUP*
+  - *VIC_SEX*
+  - *VIC_RACE*
+- I'm also removing a few variables that I don't feel have as much impact to the 
+analysis. INCIDENT_KEY would be important if we were joining multiple datasets.
+In this case, we aren't; therefore, I am removing it along with the geographical
+data. **LOCATION_DESC** can be very useful; however, at first glance it seems as
+if there is a lot of missing data. First we'll take a look at the missing
+amount.
+
+```{r loc_desc}
+sum(is.na(nypd_shootings$LOCATION_DESC)) / nrow(nypd_shootings)
+```
+
+Because over half of the data is missing, we will remove **LOCATION_DESC** as
+well.
+
+```{r tidy_col_types}
+factor_cols <- c("BORO", "JURISDICTION_CODE", "PERP_AGE_GROUP", "PERP_SEX",
+                 "PERP_RACE", "VIC_AGE_GROUP", "VIC_SEX", "VIC_RACE")
+
+nypd_shootings <- nypd_shootings %>% mutate(OCCUR_DATE = mdy(OCCUR_DATE),
+                                            across(.cols = all_of(factor_cols), 
+                                                   as.factor)) %>%
+  select(-c(INCIDENT_KEY, X_COORD_CD, Y_COORD_CD, Latitude, Longitude, Lon_Lat,
+            LOCATION_DESC))
+```
+Viewing the summary, we can see that about of a third of the PERP_AGE_GROUP,
+PERP_SEX, AND PER_RACE are missing. Thus, I will drop all rows that are missing
+data in these columns.If we had access to more data,  I could probably fill the 
+missing data using various methods. Also, JURISDICTION_CODE only has two 
+observations where the data is missing, I will fill them with a random number
+between 0 and 2.
+
+```{r data_summary}
+summary(nypd_shootings)
+
+```
+
+
+```{r missing_vals}
+nypd_shootings <- nypd_shootings %>%
+  mutate(JURISDICTION_CODE = replace(JURISDICTION_CODE, is.na(JURISDICTION_CODE)
+                                     , sample(0:2, 1))) %>%
+  drop_na(PERP_AGE_GROUP, PERP_SEX, PERP_RACE)
+sprintf("The number of missing values is: %i", sum(is.na(nypd_shootings)))
+
+summary(nypd_shootings)
+```
+From the summarize table, we can see that there are three 'Other' variables.
+As we can see below, these age groups seem as if they're typos. Therefore, we 
+will change the values to unknown.
+
+```{r perp_age_other}
+nypd_shootings %>% filter(nypd_shootings$PERP_AGE_GROUP != "18-24" &
+                          nypd_shootings$PERP_AGE_GROUP != "25-44" &
+                          nypd_shootings$PERP_AGE_GROUP != "UNKNOWN" &
+                          nypd_shootings$PERP_AGE_GROUP != "<18" &
+                          nypd_shootings$PERP_AGE_GROUP != "45-64" &
+                          nypd_shootings$PERP_AGE_GROUP != "65+"
+)
+
+nypd_shootings["PERP_AGE_GROUP"][nypd_shootings["PERP_AGE_GROUP"] == "1020" |
+                              nypd_shootings["PERP_AGE_GROUP"] == "940" |
+                              nypd_shootings["PERP_AGE_GROUP"] == "224"] <-
+  "UNKNOWN"
+                                                            
+```
+## Visualization and Analyzation
+First, lets view the summary of the data
+```{r first_summary}
+summary(nypd_shootings)
+```
+
+First, we can see that about 19% of the all of the shootings were labeled as
+murders.
+
+```{r statistical_murder_intro}
+ggplot(nypd_shootings, aes(x=STATISTICAL_MURDER_FLAG)) +
+  geom_bar() +
+  labs(title = "Cases Labeled as Murders", x = "Murder") +
+  theme(axis.title.x = element_text(margin = 
+                                      margin(t = 10)),
+        plot.title = element_text(hjust = 0.5))
+  
+```
+Maybe the amount of shooting incidents differ between different boroughs? It
+seems as if there are more shootings between the Bronx and Brooklyn
+compared to others. However, it seems the percentage of these shootings that
+are labeled as murders is consistent across all.
+
+```{r shootings_boro}
+ggplot(nypd_shootings, aes(x=BORO)) +
+  geom_bar() +
+  labs(title = "Shootings per Borough ", x = "Borough") +
+  theme(axis.title.x = element_text(margin = 
+                                      margin(t = 10)),
+        plot.title = element_text(hjust = 0.5))
+  
+```
+
+
+
+```{r statistical_murder_boro}
+
+nypd_shootings %>% group_by(BORO) %>% summarise(
+  total_shootings = n(),
+  statistical_murder = sum(STATISTICAL_MURDER_FLAG == TRUE),
+  percentage = statistical_murder / total_shootings) %>%
+  arrange(desc(percentage)) %>%
+  rename("Cases" = total_shootings, "Murder Label" = statistical_murder,
+         "%" = percentage)
+
+```
+
+Next, differing age groups may have different experiences within the city.
+Therefore, there may be different reasons for shootings. We can tell by the 
+graphs below there are more shooting incidents between perpetrators of 18-44 
+years; however, perpetrators aged 45 years or older had a higher proportion of
+cases being labeled as a murder.
+
+```{r shootings_perp_age}
+ggplot(nypd_shootings, aes(x=PERP_AGE_GROUP)) +
+  geom_bar() +
+  labs(title = "Shootings by Age Perpetrator Group ", 
+       x = "Perpetrator Age Group") +
+  theme(axis.title.x = element_text(margin = 
+                                      margin(t = 10)),
+        plot.title = element_text(hjust = 0.5))
+  
+```
+
+```{r statistical_murder_perp_age}
+nypd_shootings %>% group_by(PERP_AGE_GROUP) %>% summarise(
+  total_shootings = n(),
+  statistical_murder = sum(STATISTICAL_MURDER_FLAG == TRUE),
+  percentage = statistical_murder / total_shootings) %>%
+  ggplot(aes(x = PERP_AGE_GROUP, y = percentage)) +
+  geom_col() +
+  labs(title = "Murder % by Perpetrator Age Group ", 
+       x = "Perpetrator Age Group", y = "%") +
+  theme(axis.title.x = element_text(margin = 
+                                      margin(t = 10)),
+        plot.title = element_text(hjust = 0.5))
+
+```
+As stated before, different age groups have different experiences within New
+York City. Similar to the perpetrator, there are a higher number of cases in
+which the victim was aged between 18-44 while victims aged 45+ years had a
+higher proportion of their cases labeled as a murder.
+
+```{r shootings_vic_age}
+ggplot(nypd_shootings, aes(x=VIC_AGE_GROUP)) +
+  geom_bar() +
+  labs(title = "Shootings by Victim Age Group ", x = "Victim Age Group") +
+  theme(axis.title.x = element_text(margin = 
+                                      margin(t = 10)),
+        plot.title = element_text(hjust = 0.5))
+  
+```
+
+```{r statistical_murder_vic_age}
+nypd_shootings %>% group_by(VIC_AGE_GROUP) %>% summarise(
+  total_shootings = n(),
+  statistical_murder = sum(STATISTICAL_MURDER_FLAG == TRUE),
+  percentage = statistical_murder / total_shootings) %>%
+  ggplot(aes(x = VIC_AGE_GROUP, y = percentage)) +
+  geom_col() +
+  labs(title = "Murder % by Victim Age Group ", x = "Victim Age Group", y = "%") +
+  theme(axis.title.x = element_text(margin = 
+                                      margin(t = 10)),
+        plot.title = element_text(hjust = 0.5))
+
+```
+Next, viewing the differences between the quantity of cases among the age groups
+compared to the differences between murder proportion made me curious to view
+the differences between the perpetrator/victims sex. For both the victim and
+perpetrator, males were involved in more shootings compared to females; however,
+a higher percentage of female cases were considered murders compared to males.
+
+```{r shootings_perp_sex}
+ggplot(nypd_shootings, aes(x=PERP_SEX)) +
+  geom_bar() +
+  labs(title = "Shootings by Perpetrator Sex ", x = "Perpetrator Sex") +
+  theme(axis.title.x = element_text(margin = 
+                                      margin(t = 10)),
+        plot.title = element_text(hjust = 0.5))
+  
+```
+
+```{r statistical_murder_perp_sex}
+nypd_shootings %>% group_by(PERP_SEX) %>% summarise(
+  total_shootings = n(),
+  statistical_murder = sum(STATISTICAL_MURDER_FLAG == TRUE),
+  percentage = statistical_murder / total_shootings) %>%
+  ggplot(aes(x = PERP_SEX, y = percentage)) +
+  geom_col() +
+  labs(title = "Murder % by Perpetrator Sex ", x = "Perpetraor Sex", y = "%") +
+  theme(axis.title.x = element_text(margin = 
+                                      margin(t = 10)),
+        plot.title = element_text(hjust = 0.5))
+
+```
+
+```{r shootings_victim_sex}
+#Done
+ggplot(nypd_shootings, aes(x=VIC_SEX)) +
+  geom_bar() +
+  labs(title = "Shootings by Victim Sex ", x = "Victim Sex") +
+  theme(axis.title.x = element_text(margin = 
+                                      margin(t = 10)),
+        plot.title = element_text(hjust = 0.5))
+  
+```
+
+```{r statistical_murder_victim_sex}
+nypd_shootings %>% group_by(VIC_SEX) %>% summarise(
+  total_shootings = n(),
+  statistical_murder = sum(STATISTICAL_MURDER_FLAG == TRUE),
+  percentage = statistical_murder / total_shootings) %>%
+  ggplot(aes(x = VIC_SEX, y = percentage)) +
+  geom_col() +
+  labs(title = "Murder % by Victim Sex ", x = "Victim Sex", y = "%") +
+  theme(axis.title.x = element_text(margin = 
+                                      margin(t = 10)),
+        plot.title = element_text(hjust = 0.5))
+
+```
+Lastly, many of the shootings involved a Black American perpetrator and/or
+victim. However, a higher percentage of cases involving White Americans were
+labeled as murders.
+
+```{r shootings_perp_race}
+ggplot(nypd_shootings, aes(x=PERP_RACE, fill = PERP_RACE)) +
+  geom_bar() +
+  labs(title = "Shootings by Perpetraor Race", x = "Perpetrator Race") +
+  theme(axis.title.x = element_text(margin = 
+                                      margin(t = 10)),
+        plot.title = element_text(hjust = 0.5)) +
+  theme(axis.title.x=element_blank(),
+        axis.text.x=element_blank(),
+        axis.ticks.x=element_blank()) +
+  guides(fill=guide_legend(title="Perpetrator Race"))
+  
+```
+
+```{r statistical_murder_perp_race}
+nypd_shootings %>% group_by(PERP_RACE) %>% summarise(
+  total_shootings = n(),
+  statistical_murder = sum(STATISTICAL_MURDER_FLAG == TRUE),
+  percentage = statistical_murder / total_shootings) %>%
+  ggplot(aes(x = PERP_RACE, y = percentage, fill = PERP_RACE)) +
+  geom_col() +
+  labs(title = "Murder % by Perpetrator Race ", x = "Perpetraor Race", y = "%") +
+  theme(axis.title.x = element_blank(),
+        axis.text.x=element_blank(),
+        axis.ticks.x=element_blank(),
+        plot.title = element_text(hjust = 0.5)) +
+  guides(fill=guide_legend(title="Perpetrator Race"))
+
+```
+
+```{r shootings_victim_race}
+ggplot(nypd_shootings, aes(x=VIC_RACE, fill = VIC_RACE)) +
+  geom_bar() +
+  labs(title = "Shootings by Victim Race", x = "Victim Race") +
+  theme(plot.title = element_text(hjust = 0.5),
+        axis.title.x=element_blank(),
+        axis.text.x=element_blank(),
+        axis.ticks.x=element_blank()) +
+  guides(fill=guide_legend(title="Victim Race"))
+  
+```
+
+```{r statistical_murder_victim_race}
+nypd_shootings %>% group_by(PERP_RACE) %>% summarise(
+  total_shootings = n(),
+  statistical_murder = sum(STATISTICAL_MURDER_FLAG == TRUE),
+  percentage = statistical_murder / total_shootings) %>%
+  ggplot(aes(x = PERP_RACE, y = percentage, fill = PERP_RACE)) +
+  geom_col() +
+  labs(title = "Murder % by Victim Race ", x = "Victim Race", y = "%") +
+  theme(axis.title.x = element_blank(),
+        axis.text.x=element_blank(),
+        axis.ticks.x=element_blank(),
+        plot.title = element_text(hjust = 0.5)) +
+  guides(fill=guide_legend(title="Victim Race"))
+
+```
+The difference in murder percentages compared to the counts of incidents can be
+due to cultural differences. For example, there are many males that love to
+hunt. Hunting is physically demanding; therefore, many hunters are younger to 
+middle-aged. Accidents that occur during hunting can be considered a shooting
+but wouldn't be labeled as a murder. This difference would cause the number
+of shooting incidents for males aged between 18 and 44 to increase. Since
+hunting is not as common among females, less of their cases would be labeled as
+shooting incidents as well. In summary, the demographic that uses guns more
+may have more shooting incidents, not labeled as a murder, because 
+they are handling them more.
+
+Next, boroughs have different lifestyles due to location and differing financial
+situations. However, we can see that murder cases involving 18-44 year old
+citizens is consistently common across all boroughs.
+
+```{r statistical_murder_age_vs_boro}
+murder_df <- nypd_shootings %>% filter(STATISTICAL_MURDER_FLAG == TRUE)
+murder_df %>%group_by(BORO, VIC_AGE_GROUP) %>%
+  ggplot(aes(x = BORO, fill = VIC_AGE_GROUP)) +
+  geom_bar() +
+  labs(title = "Murder Cases by Victim Age Group per Borough", 
+       x = "Borough", y = "Cases Labeled as Murder") +
+  theme(axis.title.x = element_text(margin = 
+                                      margin(t = 10)),
+        plot.title = element_text(hjust = 0.5))+
+  guides(fill=guide_legend(title="Victim Age Group"))
+
+```
+Many citizens are involved in activities and cliques with people of similar age.
+Does this cause murders where the perpetrator and the victim are the same age?
+As shown below, although it's not a staggering difference, slightly over half of 
+the murder cases involve situations where the perpetrator and the victim are of
+different age groups.
+
+```{r statistical_murder_same_age}
+murder_df %>% mutate(same_age = ifelse(as.character(PERP_AGE_GROUP) == 
+                                              as.character(VIC_AGE_GROUP),
+                                            TRUE, FALSE)) %>%
+  group_by(same_age) %>%
+  ggplot(aes(x=same_age)) +
+  geom_bar() +
+  labs(title = "Murders on People Same Age", x = "Same Age") +
+  scale_x_discrete(labels = c("TRUE" = "Same", "FALSE" = "Different")) +
+  theme(axis.title.x = element_text(margin = 
+                                      margin(t = 10)),
+        plot.title = element_text(hjust = 0.5))
+  
+```
+Contrary to age, murders are common among victims of the same race. This could
+be due to cultural similarities.
+
+```{r statistical_murder_same_race}
+murder_df %>% mutate(same_race = ifelse(as.character(PERP_RACE) == 
+                                              as.character(VIC_RACE),
+                                            TRUE, FALSE)) %>%
+  group_by(same_race) %>%
+  ggplot(aes(x=same_race)) +
+  geom_bar() +
+  labs(title = "Murders on People Same Race", x = "Same Race") +
+  scale_x_discrete(labels = c("TRUE" = "Same", "FALSE" = "Different")) +
+  theme(axis.title.x = element_text(margin = 
+                                      margin(t = 10)),
+        plot.title = element_text(hjust = 0.5))
+```
+Do murder incidents occur at different times during the day? month? year?
+Compared to murder cases there is no disparity between a shooting incident 
+during the time of day, month or year. First, all cases are more frequent during
+later hours into the early morning. Also, more incidents occur during
+the summer months compared to other seasons. This could be because of the
+increase in weather temperature; more people would like to go outside with 
+friends and family causing more interpersonal contact. I doubt anyone wants to
+be outside during the winter; New York City winters can be quite brutal! Lastly,
+there seems to be no relationship between the day of the month and shooting
+incidents, whether they are labeled a murder or not.
+
+```{r statistical_murder_time}
+non_murder_df <- nypd_shootings %>% filter(STATISTICAL_MURDER_FLAG == FALSE)
+
+nypd_shootings <- nypd_shootings %>% mutate(day = format(OCCUR_DATE, "%d"),
+                          month = format(OCCUR_DATE, "%m"),
+                          year = format(OCCUR_DATE, "%y"))
+
+ggplot(nypd_shootings, aes(x=OCCUR_TIME, color = STATISTICAL_MURDER_FLAG)) +
+  geom_histogram(binwidth = 3600, fill="white") + #Every hour
+  guides(color=guide_legend(title="Murder Label?"))+
+    theme(axis.title.x = element_text(margin = 
+                                      margin(t = 10)),
+        plot.title = element_text(hjust = 0.5)) +
+  labs(title = 'Murder vs Nonmurder During Day', x = 'Time of Day (hours)')
+  
+  
+```
+
+
+```{r statistical_murder_days_of_month}
+nypd_shootings %>% group_by(month, STATISTICAL_MURDER_FLAG) %>%
+  summarise(incidents = n()) %>%
+  ggplot(aes(x=month, y = incidents)) +
+  geom_point(aes(color=STATISTICAL_MURDER_FLAG)) +
+  labs(title = "Murders vs Non-Murders Monthly", x= "Month", y="Incidents") +
+  guides(color=guide_legend(title="Murder Label"))+
+    theme(axis.title.x = element_text(margin = 
+                                      margin(t = 10)),
+        plot.title = element_text(hjust = 0.5)) +
+  scale_x_discrete(labels = c("Jan", "Feb", "Mar", "Apr", "May", "June", "July",
+                              "August", "Sept", "Oct", "Nov", "Dec"))
+```
+
+```{r statistical_murder_days}
+nypd_shootings %>% group_by(day, STATISTICAL_MURDER_FLAG) %>%
+  summarise(incidents = n()) %>%
+  ggplot(aes(x=day, y = incidents)) +
+  geom_point(aes(color=STATISTICAL_MURDER_FLAG)) +
+  labs(title = "Murders vs Non-Murders Day of Month", x= "Day", y="Incidents") +
+  guides(color=guide_legend(title="Murder Label"))+
+    theme(axis.title.x = element_text(margin = 
+                                      margin(t = 10)),
+        plot.title = element_text(hjust = 0.5))
+```
+In a perfect world, everyone would love to live in a city where there is no
+violence. Although that is not a reality today, New York city has
+significantly reduced the number of shooting incidents and statistical murders 
+since 2006. That being said, the current policies and cultural lifestyle
+are improving the quality of life.
+
+```{r statistical_murder_yearly}
+#look at the times of the year the murders occur by month vs non murder
+
+
+nypd_shootings %>% group_by(year, STATISTICAL_MURDER_FLAG) %>%
+  summarise(incidents = n()) %>%
+  ggplot(aes(x=year, y = incidents)) +
+  geom_point(aes(color=STATISTICAL_MURDER_FLAG)) +
+  labs(title = "Murders vs Non-Murders 2006-2020", x= "Year", y="Incidents") +
+  guides(color=guide_legend(title="Murder Label"))+
+    theme(axis.title.x = element_text(margin = 
+                                      margin(t = 10)),
+        plot.title = element_text(hjust = 0.5))
+  
+```
+
+# Model Building
+After our analysis, we would like to create a model to predict whether a
+shooting would be considered a murder or not. First, we would like to drop a 
+few variables that we don't believe are important or will be redundant in our
+model.
+
+```{r model_drop_vars}
+nypd_shootings <- nypd_shootings %>% select(
+  -c("OCCUR_DATE", "PRECINCT", "JURISDICTION_CODE", "day", "year"))
+nypd_shootings$month <- as.factor(nypd_shootings$month)
+```
+
+Now, we can finally build our model!
+```{r model_build}
+logit_1 <- glm(STATISTICAL_MURDER_FLAG ~., family = binomial, 
+               data=nypd_shootings)
+
+summary(logit_1)
+```
+
+As we can see from the model, the variables with the coefficients that are
+positive (all perpetrator age types except 'unknown', an unknown perpetrator
+sex, or the incident occurring in April) increase the probability that the
+incident is a murder case. On the other hand, a negative coefficient (the month
+of July or November, or a male perpetrator ) decreases the likelihood of the
+shooting being a murder case. It's quite surprising that the summer months
+negatively impact if a case was murder or not!
+
+# Conclusion
+Statistical murders follow the same patterns and only account for 20% 
+of all shootings. First, most cases involve males between the ages of 
+18 and 44. Although Brooklyn and the Bronx have a higher number of incidents in
+their boroughs, the percentage of those shootings that are murders is similar
+to the other areas. On the other hand, cases in which the perpetrator and/or
+victim has an age of 65+ are more likely to be considered a murder case. The
+same can be said about cases involving a female and/or white perpetrator/victim.
+Shootings involving the same race are likely to be considered murders while
+ones involving different different age groups are not. Lastly, murders do not
+differentiate from regular shootings when discussing chronological data. 
+Both regular shootings and murders will increase during the night time and
+during summer months; this could be due to warmer weather, or just a little more 
+free time.
+
+It is possible that there is bias contained within this report. First, we
+only have a few variables to look at. Income disparities, population density, 
+etc. are important variables to consider when looking at this data. 
+Also, most of our data was categorical; this makes it difficult to compare
+relationships of New York City. Maybe a higher population density would lead 
+to a higher proportion of shootings being  a murder? More data could help us 
+look at other factors that contribute to the differences between shooting types.
+
+Third, the variables in this dataset have high multicollinearity. In other 
+words, many of the variables aren't independent of each other; therefore, 
+increasing or decreasing one variable in the model may cause another to increase
+or decrease unintentionally. This causes major statistical errors when 
+attempting to make predictions. 
+
+Fourth, I wanted to avoid looking into specific variables due to ethical issues. 
+Race was a variable I used in the model; however, I didn't want to investigate 
+it much due to different issues an African American my face compared to a 
+Caucasian or vice versa. Investigating racial differences can be tricky when 
+working with data.
+
+Lastly, I have my own personal biases. I may have made some choices on how to 
+look at certain parts of the data, subconsciously. For example, I chose to focus
+on whether a shooting was considered a murder. However, I could of focused on 
+the disparities between different boroughs. These decisions could lead to 
+different interpretations of the data.
+
+In conclusion, New York City has a long history of gun violence. For the last 
+14 years they have done a great job of reducing the incidents. Lets focus on 
+reducing the violence more to make New York great for everyone.
+
+```{r session_info()}
+utils::sessionInfo()
+```
