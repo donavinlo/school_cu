@@ -1,0 +1,151 @@
+---
+title: "Airline_hmwrk"
+author: "D. ODay"
+date: '2022-06-23'
+output: pdf_document
+---
+# Week 2
+
+## Practive Assessment
+```{r import}
+airline <- read.delim("~/Documents/GitHub/school_cu/school_cu/methods for quality improvement/DTSA5704_DescribingData/data/airline.dat")
+
+require(lolcat)
+```
+1. descriptive stat of mean: $\bar{X}$
+1. descriptive stat of median: $\sim{X}$ (tilde over X) (Population is M)
+3. descriptive stat of IQR: IQR
+4. descriptive stat of Skewness: $g_{3}$
+5. descriptive stat of kurtosis: $g_{4}$
+6. parameter symbol variance: $\sigma^{2}$
+7. parameter symbol skewness: $\gamma_{3}$
+8. parameter symbol kurtosis: $\gamma_{4}$
+```{r mean_variance}
+mean(airline$Price)
+var(airline$Price)
+IQR(airline$Price)
+rng = range(airline$Price)
+rng[2] - rng[1]
+skewness(airline$Price)
+kurtosis(airline$Price)
+```
+
+# Assessment: Describing Data Graphically
+
+1. The ideal number of lcass intervals to have i a grouped frequency distribution is 10.
+2. 6
+3. 6.649
+4. 6.616,6.658
+5. 0.24
+6. 67.5
+7. 10
+8. 57.5, 112.5
+9. postively skewed
+10. 60, 100
+11. 78.5
+12. 265
+13. has outliers
+14. wrong: said 195, 305 and 0,8 should be 0, 0.2
+15. the right section
+
+```{r 2.2_3_4}
+arr = c(6.649, 6.639, 6.629, 6.642, 6.624, 6.616, 6.649, 6.654, 6.649, 6.642, 6.649, 6.637, 6.649, 6.647, 6.644, 6.657, 6.654, 6.634, 6.644, 6.649)
+df_arr = data.frame(arr)
+
+#Run Chart
+spc.run.chart(df_arr$arr)
+
+#Ungrouped Freq Distr
+frequency.dist.ungrouped(df_arr$arr)
+
+#Ungrouped Polygon
+frequency.polygon.ungrouped(df_arr$arr)
+
+```
+
+```{r 2.5_11}
+viscosity <- read.csv("~/Documents/GitHub/school_cu/school_cu/methods for quality improvement/DTSA5704_DescribingData/data/viscosity.txt", sep="")
+
+#Grouped Freq Distr
+frequency.dist.grouped(viscosity$centistokes)
+
+#Grouped Histogram
+hist.grouped(viscosity$centistokes)
+
+# 5 Num Sum
+summary(viscosity$centistokes)
+
+# Box and Whisker Plot
+boxplot(viscosity$centistokes)
+```
+
+```{r 2.5_11}
+yield <- read.csv("~/Documents/GitHub/school_cu/school_cu/methods for quality improvement/DTSA5704_DescribingData/data/yield.txt", sep="")
+
+#Grouped Hist with Density
+hist.grouped(yield$strength, freq=F)
+lines(density(yield$strength))
+
+plot(density(yield$strength))
+
+hist.grouped(yield$strength)
+
+```
+
+#Describing Data Numerically
+1. 6.643
+2. 6.646
+3. 6.649
+4. negatively skewed
+5. 0.01049
+6. 0.00011
+7. summary(), range(), frequency.dist.ungrouped()
+8. 45
+9. IQR, summary()
+10. 78
+11. quantile, summary()
+12. -0.9062
+13. negatively skewed
+14. 0.6184
+15. leptokurtic
+16. continuous-ratio
+17. 0.988
+18. positive
+
+```{r numeric_1_6}
+mean(df_arr$arr)
+median(df_arr$arr)
+sample.mode(df_arr$arr)
+
+sd(df_arr$arr)
+var(df_arr$arr)
+```
+
+```{r numeric_7_11}
+#returns skewness 
+# summary.continuous(viscosity$centistokes)
+
+# range(viscosity$centistokes)
+IQR(viscosity$centistokes)
+
+# frequency.dist.ungrouped(viscosity$centistokes)
+summary(viscosity$centistokes)
+
+#Percentile
+quantile(x=viscosity$centistokes, probs=0.45)
+
+```
+
+```{r 12_15}
+#skewness
+round(skewness(yield$strength), 4)
+
+#kurtosis
+kurtosis(yield$strength)
+```
+
+```{r 16_18}
+body <- read.csv("~/Documents/GitHub/school_cu/school_cu/methods for quality improvement/DTSA5704_DescribingData/data/body.txt", sep="")
+
+cor(x=body$height, y=body$weight, method="pearson")
+```

@@ -345,7 +345,7 @@ var(perform$weight)
 - Concerned with the symmetrical nature of the distribution
 - The degree of departure from symmetry of a distribution
 - Symmetric distributions have a measure of 0
-- Symbols (g_{3})
+- Symbols $g_{3}$
 
 - The most important group of measures of skewness and kurtosis use the third 
 and fourth moments of the mean

@@ -1,0 +1,318 @@
+---
+title: 'Wk3: PRob Distributions'
+author: "D. ODay"
+date: '2022-06-27'
+output:
+  pdf_document: default
+  html_document: default
+---
+# Probability and Probability Distributions
+
+## Intro to Probability
+
+### Definitions
+
+- **Probability** is the chance that an event will or will not occur.the terms are typically expressed in fractions or decimals
+
+- An **event** is one or more of the possible outcomes of a situation or experiment.
+
+- **experiment** is an activity which produces an event
+
+- **sample space** is the set of all possible outcomes from an experiment
+
+- Events are termed **mutually exclusive** when one and only one can take place at the same time
+
+- **Collectivelly Exhaustive** refers to lists containing all of the possible events which may result from an experiment
+
+- The probability an event will occur is $P = \frac{\# \space of \space \space event \space outcomes}{Total \space Possible \space Outcomes}$
+
+#### Rules and conditions
+- Concern
+  - the case where one event or another will occur
+    - Also known as marginal or unconditional probability
+    - P(A) = the probability P of event A occurring
+    - Where a single probability is involved, only one event can take place
+    - Ex) what is the probability of selecting a part out of 100 of them
+    - P = 1%
+  - The next situation with two or more events where they both may occur
+
+#### Mutually Exclusive
+
+- For mutually exclusive events
+  - P(A or B) = P(A) + P(B)
+- For non-mutually exclusive events
+  - P(A or B) = P(A) + P(B) - P(A+B)
+  - Ex question
+    - With two vendors A and B and with some defective parts for each vendor, what is the probability of selecting vendor A and a defective part?
+    
+### Independent Conditions
+
+- Marginal Probability
+  - P(A) Independent Event (e.g. coin toss)
+
+- Joint Probability
+  - The probability of two or more events occurring together (or in succession) is the product of their marginal probabilities
+  - P(AB) = P(A) x P(B)
+  - Ex) The probability of a machine operator producing a defective part at any point in time is 0.05. What is the probability that three bad parts will be produced in succession?
+    - P(ABC) = P(A) x P(B) x P(C)
+    - P(3 Defectives) = P(Def) x P(Def) x P(Def)
+    - P(3 def) = 0.05 x 0.05 x 0.05
+
+- Conditional Probability
+  - P(B|A)
+    - The probability event B will occur given event A has occurred
+    - P(B|A) = P(B) because A and B are independent
+    
+#### Dependent Conditions
+
+- Conditional Probability
+  - $P(B|A) = \frac{P(B \space \cap \space A)}{A}$
+
+#### Joint Probabilities Under Statistical Dependence
+
+- The formula for joint probabilities under statistical dependence is a variation of the conditional probability formula
+- The joint probability of B and A is the following
+  - P(BA) = P(B|A) x P(A)
+  - Where P(BA) is the probability of events B and A happening together in succession
+  
+## Probability Distributions
+
+- The theoretical frequency distributions which are collectively exhaustive
+
+#### Distribution in R example
+
+```{r binomial}
+require(lolcat)
+#Get distribution
+table.dist.binomial(n=2, p=0.2)
+
+#Barplot of Distribution
+n = 2
+P = 0.2
+data=dbinom(x=0:n, size=n, prob=P)
+names(data) = 0:n
+barplot(data, ylab="P(D)", ylim=c(0,1))
+
+```
+  
+### Types of Probability Distributions
+
+- Discrete
+  - There are a limited number of possible values
+- Continuous
+  - A continuous probability distribution has relatively unlimited possibilities for variable value
+- A **random variable** is one which can take on different values as a result of the outcomes of a random experiment. Can be either discrete or continuous
+
+```{r discrete_distr}
+Daily.Production <- read.table("~/Documents/GitHub/school_cu/school_cu/methods for quality improvement/DTSA5704_DescribingData/data/Daily Production.txt", quote="\"", comment.char="")
+
+(freqdistdp<-round.object(frequency.dist.grouped(Daily.Production$V1),3))
+(probdistdp<-freqdistdp[,c("min","freq","rel.freq")])
+colnames(probdistdp)<-c("Daily Production", "#of Days", "P(DP)")
+
+# Probability Distribution (Histogram)
+hist.grouped(Daily.Production$V1, freq = F, anchor.value=50, ylim=c(0,0.20))
+```
+
+#### Expected Value of a Discrete Variable
+
+- One of the most important factors related to any probability distribution is the ability to define the expected value of a random variable 
+
+```{r discrete_mean}
+# Expected Value of a Discrete Random Variable
+x<-probdistdp$`Daily Production`
+y<-probdistdp$`P(DP)`
+weighted.mean(x,y)
+mean(Daily.Production$V1)
+```
+
+#### Common Probability Distributions
+
+- Discrete
+  - Binomial
+  - Poisson
+  - Hypergeometric
+  - Geometric
+- Continuous
+  - Normal
+  - Exponential
+  - Weibull Family
+  - Johnson Family
+  - Other Distributions
+  
+# Discrete Distributions
+
+## The binomial distribution
+
+- Basically either/or between two probabilities
+
+```{r binom_distr}
+# Get density at exactly that x-value
+dbinom(x=45, size=50, prob=0.8)
+
+#binomial table (lolcat)
+#gives desnsity at x for each X
+round.object(table.dist.binomial(n=50, p=0.8), 5)
+
+#Barplot of Binomial Prob Distribution
+
+n=50
+P=0.8
+
+data = dbinom(x=26:n, size=n, prob=P)
+names(data) = 26:n
+barplot(data, xlab="# of Good Parts", ylab="P(G", ylim=c(0, 0.15))
+cols = rep("grey", n+1)
+cols[20:25] = "red"
+barplot(data, col=cols, xlab=" # of Good Parts", ylab="P(G)", ylim=c(0, 0.14))
+
+#Probability of >=45
+#Not that pbinom gives P(X>x) for upper tail probs
+pbinom(q=44, size=50, prob=0.8, lower.tail=F)
+```
+
+## The Poisson distribution
+
+- The number of occurences within a time frame
+
+```{r poiss_distr}
+# Get density at exactly that x-value
+dpois(x=10, lambda=25)
+
+#dpoisson table (lolcat)
+#gives density at x for each X
+round.object(table.dist.poisson(lambda = 25), 5)
+round.object(table.dist.poisson(lambda = 25)[7:51,], 5)
+
+#Barplot of Poisson Prob Distribution
+
+lambda=25
+x = 10
+
+data = dpois(x=26:50, lambda=lambda)
+names(data) = 26:50
+barplot(data, xlab="#Parts per Hour", ylab="P(X)", ylim=c(0, 0.10))
+
+#Probability of 10 or fewer
+#Note gives P(X>x) for upper tail probs
+ppois(q=10, lambda=25, lower.tail=T)
+
+# Poisson distribution testing
+poisdist = rpois(n=100, lambda=25)
+poisson.dist.test(poisdist)
+```
+
+#Continuous Prob Distributions
+
+### Normality
+-Use anderson-darling test for normality and double check with shapiro-wil test when n <25
+- when n> 25 use the skewness and kurtosis tests (DAgostino)
+
+```{r nrom_code}
+#Calculate the area under the curve with Z score
+# notice, when given z-score teh mean is 0 and sd is 1
+pnorm(q=-1.6, mean=0, sd=1, lower.tail=T)
+
+#Calculate the area under the curve using pnorm
+pnorm(q=172, mean=180, sd=5, lower.tail=T)
+
+#Shade areas under the normal curve
+x = seq(5, 5.45, length=200)
+y=dnorm(x, mean=5.22, sd=0.05)
+plot(x,y, type="l")
+
+#Shade the lower tail area
+x = seq(5,5.15, length=100)
+y=dnorm(x, mean=5.22, sd=0.05)
+polygon(c(5, x, 5.15), c(0,y,0), col="red")
+
+#Shade the upper tail area
+x = seq(5.35,5.45, length=100)
+y=dnorm(x, mean=5.22, sd=0.05)
+polygon(c(5.35, x, 5.45), c(0,y,0), col="red")
+
+#add line at mean
+abline(v=5.22)
+
+#Test for normality when n < 25
+normdata = rnorm(n=24, mean=10, sd=2)
+anderson.darling.normality.test(normdata)
+shapiro.wilk.normality.test(normdata)
+
+#Test for normality when n > 25
+normdata = rnorm(n=25, mean=10, sd=2)
+(normout = dagostino.normality.omnibus.test(normdata))
+(skkupvals = c(normout$estimate[6], normout$estimate[12]))
+
+#summary.continuous(normdata) gives us all of these values by itself
+```
+
+## The Exponential Distribution
+
+- Measures time between failure analysis or reliability issues
+- With the exponential distribution
+  - 36.8% of the area under the curve is above average
+  - 63.2% of the area under the curve is above the average
+  
+- Testing for Exponentiality
+  - when n <= 100, use shapiro-wilkes
+  - when > 100 use epps and pulley
+
+```{r exp_distr}
+pexp(q=60, rate=1/100, lower.tail = F)
+
+#When given the origin parameter or known as x_min. Let it be 5 in this case
+pexp(q=(20-5), rate=1/(50-5), lower.tail = T)
+pexp.low(q=20, low=5, mean=50, lower.tail=T)
+
+#Testing for Exponentiality
+
+#n<=100
+expdata = rexp(n=100, rate=1/50)
+shapiro.wilk.exponentiality.test(expdata)
+
+#n >= 101
+#want p-vale >= 0.05
+expdata = rexp(n=101, rate=1/50)
+shapetest.exp.epps.pulley.1986(expdata)
+
+```
+# Quiz
+
+1. 0.0167
+2. 178/6000
+3.joint
+4. 2194/6000
+5. **the addition rule for non mutuall** and **joint probbability under dependent condtions**
+6. 16/224
+7. conditional
+8. Normal, exponential, binomial, poisson
+
+
+
+9. Assume that a batch of incoming parts has a defective rate of 2%  or 0.02 (A part is either defective or not defective). A sample of 400 parts is drawn and inspected. What is the probability of finding 4 or fewer defectives? Round your answer to 4 places after the decimal point (e.g. X.XXXX). **wrong**
+
+```{r quiz_9}
+round(pbinom(q=4, size=400, prob=0.02, lower.tail=T), 4)
+```
+
+
+10. A warehouse team member has been monitoring the daily shipment rate of automobile accessories. On average, the number of pallets per day that have been shipped is 65 (λ). The shipment rate has been statistically stable and has been shown to be representative of a Poisson function. The warehouse manager recently asked what the probability of shipping 50 pallets or more in a day was. What is that probability? Round your answer to 4 places after the decimal point.
+
+```{r quiz_10}
+round(ppois(q=49, lambda=65, lower.tail=F), 4)
+```
+
+11. A normally distributed process has typically run at a 𝜇 of 153 with a 𝜎 of 10. The specifications for the part are 159 ± 5 (meaning the upper specification limit is 164 and the lower specification limit is 154). What is the probability that a single part selected at random from a standard lot will be out of specification? Round your answer to 4 places after the decimal point. **wrong**
+
+```{r quiz_11}
+upper = pnorm(q=164, mean=153, sd=10, lower.tail=F)
+lower = pnorm(q=154, mean=153, sd=10, lower.tail=T)
+round(upper + lower, 4)
+```
+
+12. A manufacturing company that makes AC motors has recently performed an analysis of their in-service motors. They discovered that the mean time to failure (𝜇) has been found to be 40,000 hours and is exponentially distributed. (Xmin=0). What is the probability that a single randomly selected motor will run 10,000 hours or less? Round your answer to 4 places after the decimal point
+
+```{r quiz_12}
+round(pexp(q=10000, rate=1/40000, lower.tail = T), 4)
+```
