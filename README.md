@@ -1,2 +1,2 @@
-# school_cu
- Colorado Boulder Public Assignments
+# Learning Repository
+ Repsotiroy containing all material used for learning
